@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import 'vant/lib/index.css'
 import '@/utils/vant-ui'
+import '@/style/common.less'
 
 Vue.config.productionTip = false
 
