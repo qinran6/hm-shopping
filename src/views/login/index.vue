@@ -84,6 +84,8 @@ export default {
     async getCode () {
       if (!this.validFn()) return
       if (!this.timer && this.totalSecond === this.second) {
+        const res = await getMsgCode(this.picCode, this.picKey, this.mobilePhone)
+        Toast(res.message)
         this.timer = setInterval(() => {
           if (this.second > 1) {
             this.second--
@@ -93,15 +95,11 @@ export default {
             this.second = this.totalSecond
           }
         }, 1000)
-        const res = await getMsgCode(this.picCode, this.picKey, this.mobilePhone)
-        if (res.status === 200) {
-          Toast(res.message)
-        }
       }
     },
     // 登录
     async Login () {
-      if (!this.validFn) return
+      if (!this.validFn()) return
       if (!/^\d{6}$/.test(this.msgCode)) {
         this.$toast('请输入正确的短信验证码')
         return
@@ -115,7 +113,7 @@ export default {
         this.picUpdate()
         this.picCode = ''
         this.msgCode = ''
-        this.$toast('请输入正确的短信验证码')
+        Toast('请输入正确的短信验证码')
       }
     }
   },
