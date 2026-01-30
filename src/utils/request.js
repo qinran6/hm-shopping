@@ -19,6 +19,12 @@ instance.interceptors.request.use(function (config) {
   }
   if (config.url === '/passport/login') {
     config.skipGlobalErrorHandler = true
+    Toast.loading({
+      message: '登录中...',
+      forbidClick: true,
+      loadingType: 'spinner',
+      duration: 0
+    })
   }
   return config
 }, function (error) {
@@ -38,6 +44,8 @@ instance.interceptors.response.use(function (response) {
       // 抛出一个错误提示
       return Promise.reject(res.message)
     }
+  } else {
+    Toast.clear()
   }
   return res
 }, function (error) {
