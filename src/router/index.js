@@ -34,7 +34,7 @@ const router = new VueRouter({
     // 动态路由传参，确认将来是哪个商品，路由参数中携带id
     { path: '/prodetail/:id', component: ProDetail },
     { path: '/search', component: Search },
-    { path: '/searlist', component: SearchList }
+    { path: '/searchlist', component: SearchList }
   ]
 })
 // 全局前置守卫 所有路由在真正到达之前都会经过全局前置守卫，只有它放行才会到达对应页面
