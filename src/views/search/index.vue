@@ -11,36 +11,56 @@
         show-action
         placeholder="请输入搜索关键词"
         clearable
-        @search="$router.push('/searchList')"
+        @search="onSearch(value)"
       >
         <template #action>
-          <div @click="$router.push('/searchList')">搜索</div>
+          <div @click="onSearch(value)">搜索</div>
         </template>
       </van-search>
     </form>
     <!-- 搜索历史 -->
-     <div class="search-history">
+     <div class="search-history" v-if="list.length>0">
       <div class="title">
         <span>最近搜索</span>
-        <van-icon name="delete-o" size="16"/>
+        <van-icon name="delete-o" size="16" @click="del"/>
       </div>
       <div class="list">
-        <div class="list-item" @click="$router.push('/searchList')">手机</div>
+        <div v-for="(item) in list" :key="item" class="list-item" @click="onSearch(item)">{{item}}</div>
       </div>
      </div>
   </div>
 </template>
 
 <script>
+import { getHistoryList, setHistoryList } from '@/utils/storage'
+
 export default {
   name: 'SearchIndex',
   data () {
     return {
-      value: ''
+      value: '',
+      list: getHistoryList()
     }
   },
   methods: {
-
+    onSearch (key) {
+      if (key !== '') {
+        const index = this.list.indexOf(key)
+        if (index !== -1) {
+          this.list.splice(index, 1)
+          this.list.unshift(key)
+        } else {
+          this.list.unshift(key)
+        }
+        this.value = ''
+        setHistoryList(this.list)
+        this.$router.push(`/searchList?search=${key}`)
+      }
+    },
+    del () {
+      this.list = []
+      setHistoryList([])
+    }
   }
 }
 </script>
