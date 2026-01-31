@@ -3,7 +3,7 @@
     <van-nav-bar
       title="商品搜索"
       left-arrow
-      @click-left="$router.back()"
+      @click-left="$router.push('/home')"
     />
     <form action="/">
       <van-search
