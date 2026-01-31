@@ -32,7 +32,7 @@ const router = new VueRouter({
     { path: '/myorder', component: MyOrder },
     { path: '/pay', component: Pay },
     // 动态路由传参，确认将来是哪个商品，路由参数中携带id
-    { path: '/prodetail/: id', component: ProDetail },
+    { path: '/prodetail/:id', component: ProDetail },
     { path: '/search', component: Search },
     { path: '/searlist', component: SearchList }
   ]
@@ -43,7 +43,7 @@ const router = new VueRouter({
 // next(): 是否放行 next() 直接放行，放行到to要去的路径；next(路径) 进行拦截，拦截到next里面配置的路径
 const authUrls = ['/pay', '/myorder']
 router.beforeEach((to, from, next) => {
-  console.log(to, from, next)
+  // console.log(to, from, next)
   if (!authUrls.includes(to.path)) {
     next()
     return
