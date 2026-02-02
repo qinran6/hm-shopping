@@ -1,17 +1,18 @@
 <template>
   <div class="search">
     <van-nav-bar
-      flexed
       title="商品列表"
       left-arrow
       @click-left="$router.go(-1)"
+      fixed
     />
 
     <van-search
+      class="mysearch"
       readonly
       show-action
       shape="round"
-      background="#ffffff"
+      background="#f1f1f2"
       :value="$route.query.search || '搜索商品'"
       @click="$router.push('/search')"
     >
@@ -20,7 +21,7 @@
       </template>
     </van-search>
     <!-- 排序选项按钮 -->
-    <van-dropdown-menu>
+    <van-dropdown-menu class="mymenu">
       <van-dropdown-item v-model="value1" :options="option1" @change="updateList" />
       <van-dropdown-item v-model="value2" :options="option2" @change="updateList" />
     </van-dropdown-menu>
@@ -88,6 +89,18 @@ export default {
   ::v-deep .van-icon-arrow-left {
     color: #333;
   }
+  .van-search {
+    position: fixed;
+    width: 100%;
+    top: 42px;
+    z-index: 999;
+  }
+  .mymenu {
+    position: fixed;
+    width: 100%;
+    top: 95px;
+    z-index: 999;
+  }
   .tool {
     font-size: 24px;
     height: 40px;
@@ -98,6 +111,7 @@ export default {
 
 // 商品样式
 .goods-list {
+  padding-top: 138px;
   background-color: #f6f6f6;
 }
 </style>
