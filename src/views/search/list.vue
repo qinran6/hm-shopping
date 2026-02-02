@@ -66,6 +66,9 @@ export default {
     }
   },
   async created () {
+    if (this.$route.query.categoryId) {
+      this.queryObj.categoryId = this.$route.query.categoryId
+    }
     const res = await getGoodsList(this.queryObj)
     console.log(res)
     this.goodsList = res.data.list.data
