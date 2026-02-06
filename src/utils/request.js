@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { Toast } from 'vant'
+import store from '@/store/index'
 // 创建axios实例，将来对创建出来的实例进行自定义配置
 // 不会污染原始的axios实例
 const instance = axios.create({
@@ -11,11 +12,11 @@ const instance = axios.create({
 instance.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
   // 在这里统一添加 header 参数
-  config.headers.platform = 'h5' // 添加 platform 参数
+  config.headers.platform = 'H5' // 添加 platform 参数
   // 如果需要 token，也可以在这里添加
-  const token = localStorage.getItem('token') || sessionStorage.getItem('token')
+  const token = store.getters.token || sessionStorage.getItem('token')
   if (token) {
-    config.headers['Access-Token'] = `Bearer ${token}`
+    config.headers['Access-Token'] = token
   }
   if (config.url === '/passport/login') {
     config.skipGlobalErrorHandler = true

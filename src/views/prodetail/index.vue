@@ -71,7 +71,9 @@
     <!-- 底部 -->
     <van-goods-action class="footer">
       <van-goods-action-icon class="icon-home" icon="wap-home-o" text="首页" @click="$router.push('/home')" />
-      <van-goods-action-icon class="icon-cart" icon="cart-o" text="购物车" @click="$router.push('/cart')" />
+      <!-- <van-goods-action-icon v-if="cartCount > 0" class="icon-cart" :badge="cartCount" icon="cart-o" text="购物车" @click="$router.push('/cart')" />
+      <van-goods-action-icon v-else class="icon-cart" icon="cart-o" text="购物车" @click="$router.push('/cart')" /> -->
+      <van-goods-action-icon class="icon-cart" :badge="cartCount" icon="cart-o" text="购物车" @click="$router.push('/cart')" />
       <van-goods-action-button @click="addFn"  class="btn-add" type="warning" text="加入购物车" />
       <van-goods-action-button @click="buyFn" class="btn-buy" type="danger" text="立即购买" />
     </van-goods-action>
@@ -116,6 +118,7 @@
 import { getListRow, getProdetailData } from '@/api/prodetail'
 import CountBox from '@/components/CountBox.vue'
 import defaultImg from '@/assets/default-avatar.png'
+import { addGoodsCart, getCartCount } from '@/api/cart'
 export default {
   name: 'ProdetailIndex',
   components: {
@@ -124,6 +127,7 @@ export default {
   created () {
     this.getProDetail()
     this.getComList()
+    this.getCart()
   },
   data () {
     return {
@@ -136,7 +140,8 @@ export default {
       defaultImg,
       showPannel: false,
       mode: 'cart',
-      addCount: 1
+      addCount: 1,
+      cartCount: 0
     }
   },
   computed: {
@@ -160,6 +165,11 @@ export default {
       this.commentList = res.data.list
       this.commentTotal = res.data.total
     },
+    async getCart () {
+      const res = await getCartCount()
+      console.log(res)
+      this.cartCount = res.data.cartTotal
+    },
     addFn () {
       this.mode = 'cart'
       this.showPannel = true
@@ -168,7 +178,7 @@ export default {
       this.mode = 'buynow'
       this.showPannel = true
     },
-    addCart () {
+    async addCart () {
       if (!this.$store.getters.token) {
         this.$dialog.confirm({
           title: '温馨提示',
@@ -183,8 +193,13 @@ export default {
             }
           })
         }).catch(() => {})
-        // return
+        return
       }
+      const res = await addGoodsCart(this.goodsId, this.addCount, this.goodsdetail.skuList[0].goods_sku_id)
+      console.log(res)
+      this.cartCount = res.data.cartTotal
+      this.$toast('加入购物车成功')
+      this.showPannel = false
     },
     goBuyNow () {
 
