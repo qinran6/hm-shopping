@@ -109,7 +109,8 @@ export default {
       if (res.status === 200) {
         this.$store.commit('user/setUserInfo', res.data)
         this.$toast(res.message)
-        this.$router.push('/')
+        const url = this.$route.query.backUrl || '/'
+        this.$router.replace(url)
       } else {
         this.picUpdate()
         this.picCode = ''
