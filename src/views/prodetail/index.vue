@@ -72,19 +72,54 @@
     <van-goods-action class="footer">
       <van-goods-action-icon class="icon-home" icon="wap-home-o" text="首页" @click="$router.push('/home')" />
       <van-goods-action-icon class="icon-cart" icon="cart-o" text="购物车" @click="$router.push('/cart')" />
-      <van-goods-action-button class="btn-add" type="warning" text="加入购物车" />
-      <van-goods-action-button class="btn-buy" type="danger" text="立即购买" />
+      <van-goods-action-button @click="addFn"  class="btn-add" type="warning" text="加入购物车" />
+      <van-goods-action-button @click="buyFn" class="btn-buy" type="danger" text="立即购买" />
     </van-goods-action>
+
+    <!-- 加入购物车的弹层 -->
+    <van-action-sheet v-model="showPannel" :title="mode === 'cart' ? '加入购物车' : '立即购买'">
+      <div class="product">
+        <div class="product-title">
+          <div class="left">
+            <img :src="goodsdetail.goods_image" alt="">
+          </div>
+          <div class="right">
+            <div class="price">
+              <span>¥</span>
+              <span class="nowprice">{{ goodsdetail.goods_price_min }}</span>
+            </div>
+            <div class="count">
+              <span>库存</span>
+              <span>{{ goodsdetail.stock_total }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="num-box">
+          <span>数量</span>
+          <!-- v-model 本质上 :value 和 @input 的简写 -->
+          <CountBox v-model="addCount"></CountBox>
+        </div>
+
+        <!-- 有库存才显示提交按钮 -->
+        <div class="showbtn" v-if="goodsdetail.stock_total > 0">
+          <div class="btn" v-if="mode === 'cart'" @click="addCart">加入购物车</div>
+          <div class="btn now" v-else @click="goBuyNow">立刻购买</div>
+        </div>
+
+        <div class="btn-none" v-else>该商品已抢完</div>
+      </div>
+    </van-action-sheet>
   </div>
 </template>
 
 <script>
 import { getListRow, getProdetailData } from '@/api/prodetail'
+import CountBox from '@/components/CountBox.vue'
 import defaultImg from '@/assets/default-avatar.png'
 export default {
   name: 'ProdetailIndex',
   components: {
-
+    CountBox
   },
   created () {
     this.getProDetail()
@@ -98,7 +133,10 @@ export default {
       goodsdetail: {},
       commentList: [],
       commentTotal: 0,
-      defaultImg
+      defaultImg,
+      showPannel: false,
+      mode: 'cart',
+      addCount: 1
     }
   },
   computed: {
@@ -121,6 +159,20 @@ export default {
       console.log(res)
       this.commentList = res.data.list
       this.commentTotal = res.data.total
+    },
+    addFn () {
+      this.mode = 'cart'
+      this.showPannel = true
+    },
+    buyFn () {
+      this.mode = 'buynow'
+      this.showPannel = true
+    },
+    addCart () {
+
+    },
+    goBuyNow () {
+
     }
   }
 }
