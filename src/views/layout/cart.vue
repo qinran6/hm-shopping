@@ -13,7 +13,7 @@
     <!-- 购物车列表 -->
     <div class="cart-list">
       <div class="cart-item" v-for="item in cartList" :key="item.goods_id">
-        <van-checkbox :value="item.isChecked"></van-checkbox>
+        <van-checkbox @click="toggleCheck(item.goods_id)" :value="item.isChecked"></van-checkbox>
         <div class="show">
           <img :src="item.goods.goods_image" alt="">
         </div>
@@ -30,8 +30,8 @@
     </div>
 
     <div class="footer-fixed">
-      <div  class="all-check">
-        <van-checkbox  icon-size="18"></van-checkbox>
+      <div @click="toggleAllCheck"  class="all-check">
+        <van-checkbox :value="isAllCheck"  icon-size="18"></van-checkbox>
         全选
       </div>
 
@@ -67,7 +67,15 @@ export default {
   },
   computed: {
     ...mapState('cart', ['cartList']),
-    ...mapGetters('cart', ['cartCount', 'totalPrice', 'totalCount'])
+    ...mapGetters('cart', ['cartCount', 'totalPrice', 'totalCount', 'isAllCheck'])
+  },
+  methods: {
+    toggleCheck (id) {
+      this.$store.commit('cart/toggleCheck', id)
+    },
+    toggleAllCheck () {
+      this.$store.commit('cart/toggleAllCheck', !this.isAllCheck)
+    }
   }
 }
 </script>

@@ -29,11 +29,24 @@ export default {
       return state.cartList.reduce((sum, item) => {
         return item.isChecked ? sum + item.goods_num : sum + 0
       }, 0)
+    },
+    // 判断是否全选
+    isAllCheck (state) {
+      return state.cartList.every(item => item.isChecked)
     }
   },
   mutations: {
     setCartList (state, newList) {
       state.cartList = newList
+    },
+    // 点击复选框重置状态
+    toggleCheck (state, id) {
+      const goods = state.cartList.find(item => item.goods_id === id)
+      goods.isChecked = !goods.isChecked
+    },
+    // 点击全选，重置状态
+    toggleAllCheck (state, flag) {
+      state.cartList.forEach(item => { item.isChecked = flag })
     }
   },
   // 处理异步操作
