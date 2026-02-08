@@ -53,6 +53,16 @@ export default {
   name: 'CartPage',
   components: {
     CountBox
+  },
+  data () {
+    return {
+
+    }
+  },
+  created () {
+    if (this.$store.getters.token) {
+      this.$store.dispatch('cart/getCartAction')
+    }
   }
 }
 </script>
