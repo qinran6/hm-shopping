@@ -1,4 +1,4 @@
-import { getCartList } from '@/api/cart'
+import { getCartList, updateCartList } from '@/api/cart'
 
 export default {
   namespaced: true,
@@ -47,6 +47,11 @@ export default {
     // 点击全选，重置状态
     toggleAllCheck (state, flag) {
       state.cartList.forEach(item => { item.isChecked = flag })
+    },
+    // 修改商品数量
+    changeCount (state, { goodsId, goodsNum }) {
+      const goods = state.cartList.find(item => item.goods_id === goodsId)
+      goods.goods_num = goodsNum
     }
   },
   // 处理异步操作
@@ -58,6 +63,13 @@ export default {
       })
       console.log(res)
       context.commit('setCartList', res.data.list)
+    },
+    async changeCountAction (context, obj) {
+      const { goodsId, goodsNum, goodsSkuId } = obj
+      // 先本地修改
+      context.commit('changeCount', { goodsId, goodsNum })
+      // 再同步到后台
+      await updateCartList(goodsId, goodsNum, goodsSkuId)
     }
   }
 }

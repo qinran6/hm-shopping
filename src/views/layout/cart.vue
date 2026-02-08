@@ -22,7 +22,8 @@
           <span class="bottom">
             <div class="price">¥ <span>{{item.goods.goods_price_min}}</span></div>
             <div class="count-box">
-              <CountBox :value="item.goods_num"></CountBox>
+              <!-- 既希望保留原本的形参，又需要通过调用函数传参 => 箭头函数包装一层 -->
+              <CountBox @input="(value) => changeCount(value, item.goods_id, item.goods_sku_id)" :value="item.goods_num"></CountBox>
             </div>
           </span>
         </div>
@@ -75,6 +76,10 @@ export default {
     },
     toggleAllCheck () {
       this.$store.commit('cart/toggleAllCheck', !this.isAllCheck)
+    },
+    changeCount (goodsNum, goodsId, goodsSkuId) {
+      // console.log(goodsNum, goodsId, goodsSkuId)
+      this.$store.dispatch('cart/changeCountAction', { goodsId, goodsNum, goodsSkuId })
     }
   }
 }
