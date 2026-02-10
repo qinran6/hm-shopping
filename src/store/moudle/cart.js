@@ -1,5 +1,5 @@
-import { getCartList, updateCartList } from '@/api/cart'
-
+import { getCartList, updateCartList, deleteCartGood } from '@/api/cart'
+import { Toast } from 'vant'
 export default {
   namespaced: true,
   state () {
@@ -15,9 +15,9 @@ export default {
       }, 0)
     },
     // 选中的商品
-    // selCartList (state) {
-    //   return state.cartList.filter(item => item.isChecked)
-    // },
+    selCartList (state) {
+      return state.cartList.filter(item => item.isChecked)
+    },
     // 选中的商品总价
     totalPrice (state) {
       return state.cartList.reduce((sum, item) => {
@@ -70,6 +70,13 @@ export default {
       context.commit('changeCount', { goodsId, goodsNum })
       // 再同步到后台
       await updateCartList(goodsId, goodsNum, goodsSkuId)
+    },
+    async delSelect (context) {
+      const selCartList = context.getters.selCartList
+      const cartIds = selCartList.map(item => item.id)
+      await deleteCartGood(cartIds)
+      Toast('删除成功')
+      context.dispatch('getCartAction')
     }
   }
 }
