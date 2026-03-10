@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '@/views/login'
 import Layout from '@/views/layout/index.vue'
 import MyOrder from '@/views/myorder'
-import Pay from '@/views/pay'
+import Pay from '@/views/pay/index.vue'
 import ProDetail from '@/views/prodetail'
 import Search from '@/views/search/index.vue'
 import SearchList from '@/views/search/list.vue'
@@ -11,6 +11,8 @@ import Home from '@/views/layout/home.vue'
 import Category from '@/views/layout/category.vue'
 import Cart from '@/views/layout/cart.vue'
 import User from '@/views/layout/user.vue'
+import AddressList from '@/views/pay/addresslist.vue'
+import AddressEdit from '@/views/pay/addressedit.vue'
 import { getInfo } from '@/utils/storage'
 
 Vue.use(VueRouter)
@@ -34,7 +36,9 @@ const router = new VueRouter({
     // 动态路由传参，确认将来是哪个商品，路由参数中携带id
     { path: '/prodetail/:id', component: ProDetail },
     { path: '/search', component: Search },
-    { path: '/searchlist', component: SearchList }
+    { path: '/searchlist', component: SearchList },
+    { path: '/addresslist', component: AddressList },
+    { path: '/addressedit', component: AddressEdit }
   ]
 })
 // 全局前置守卫 所有路由在真正到达之前都会经过全局前置守卫，只有它放行才会到达对应页面

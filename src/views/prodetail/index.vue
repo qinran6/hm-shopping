@@ -202,7 +202,9 @@ export default {
       this.showPannel = false
     },
     goBuyNow () {
-
+      console.log(1)
+      this.$router.push('/pay')
+      console.log(1)
     }
   }
 }

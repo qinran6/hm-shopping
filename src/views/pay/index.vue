@@ -9,13 +9,13 @@
         <van-icon name="logistics" />
       </div>
 
-      <div class="info" v-if="true">
+      <div class="info" v-if="addressDetail">
         <div class="info-content">
-          <span class="name">小红</span>
-          <span class="mobile">13811112222</span>
+          <span class="name">{{addressDetail.name}}</span>
+          <span class="mobile">{{addressDetail.phone}}</span>
         </div>
         <div class="info-address">
-          江苏省 无锡市 南长街 110号 504
+          {{detail}}
         </div>
       </div>
 
@@ -24,7 +24,7 @@
       </div>
 
       <div class="right-icon">
-        <van-icon name="arrow" />
+        <van-icon @click="$router.push('/addresslist')" name="arrow" />
       </div>
     </div>
 
@@ -95,13 +95,32 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   name: 'PayIndex',
   data () {
     return {
     }
   },
+  created () {
+    // this.$store.dispatch('address/getAddressIdAction')
+    this.$store.dispatch('address/getAddressDetailAction')
+  },
+  computed: {
+    ...mapState('address', ['addressDetail']),
+    detail () {
+      if (!this.addressDetail) {
+        return ''
+      }
+      if (!this.addressDetail.region) {
+        return ''
+      }
+      return (this.addressDetail.region.province || '') + (this.addressDetail.region.city || '') + (this.addressDetail.region.region || '') + (this.addressDetail.detail || '')
+    }
+  },
   methods: {
+
   }
 }
 </script>
