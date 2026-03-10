@@ -203,8 +203,15 @@ export default {
     },
     goBuyNow () {
       console.log(1)
-      this.$router.push('/pay')
-      console.log(1)
+      this.$router.push({
+        path: '/pay',
+        query: {
+          mode: 'buyNow',
+          goodsId: this.goodsId,
+          goodsSkuId: this.goodsdetail.skuList[0].goods_sku_id,
+          goodsNum: this.addCount
+        }
+      })
     }
   }
 }

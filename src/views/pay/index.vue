@@ -119,6 +119,15 @@ export default {
     cartIds () {
       return this.$route.query.cartId
     },
+    goodsId () {
+      return this.$route.query.goodsId
+    },
+    goodsSkuId () {
+      return this.$route.query.goodsSkuId
+    },
+    goodsNum () {
+      return this.$route.query.goodsNum
+    },
     detail () {
       if (!this.addressDetail) {
         return ''
@@ -131,12 +140,23 @@ export default {
   },
   methods: {
     async getOrderList () {
-      const { data: { order, personal } } = await checkOrder(this.mode, {
-        cartIds: this.cartIds
-      })
-      this.goodsList = order.goodsList
-      this.order = order
-      this.personal = personal
+      if (this.mode === 'buyNow') {
+        const { data: { order, personal } } = await checkOrder(this.mode, {
+          goodsId: this.goodsId,
+          goodsSkuId: this.goodsSkuId,
+          goodsNum: this.goodsNum
+        })
+        this.goodsList = order.goodsList
+        this.order = order
+        this.personal = personal
+      } else {
+        const { data: { order, personal } } = await checkOrder(this.mode, {
+          cartIds: this.cartIds
+        })
+        this.goodsList = order.goodsList
+        this.order = order
+        this.personal = personal
+      }
     }
   }
 }
