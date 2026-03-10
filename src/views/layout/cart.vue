@@ -43,7 +43,7 @@
             <span>合计：</span>
             <span>¥ <i class="totalPrice">{{totalPrice}}</i></span>
           </div>
-          <div v-if="!isEdit" class="goPay" :class="{disabled: totalCount === 0}">结算({{totalCount}})</div>
+          <div v-if="!isEdit" class="goPay" :class="{disabled: totalCount === 0}" @click="goPay">结算({{totalCount}})</div>
           <div v-else @click="handleDel()" class="delete" :class="{disabled: totalCount === 0}">删除</div>
         </div>
       </div>
@@ -78,7 +78,7 @@ export default {
   },
   computed: {
     ...mapState('cart', ['cartList']),
-    ...mapGetters('cart', ['cartCount', 'totalPrice', 'totalCount', 'isAllCheck']),
+    ...mapGetters('cart', ['selCartList', 'cartCount', 'totalPrice', 'totalCount', 'isAllCheck']),
     isLogin () {
       return this.$store.getters.token
     }
@@ -98,6 +98,17 @@ export default {
       if (this.totalCount === 0) return
       this.$store.dispatch('cart/delSelect')
       this.isEdit = !this.isEdit
+    },
+    goPay () {
+      if (this.totalCount > 0) {
+        this.$router.push({
+          path: '/pay',
+          query: {
+            mode: 'cart',
+            cartId: this.selCartList.map(item => item.id).join(',')
+          }
+        })
+      }
     }
   },
   watch: {
