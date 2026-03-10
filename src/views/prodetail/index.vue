@@ -119,8 +119,10 @@ import { getListRow, getProdetailData } from '@/api/prodetail'
 import CountBox from '@/components/CountBox.vue'
 import defaultImg from '@/assets/default-avatar.png'
 import { addGoodsCart, getCartCount } from '@/api/cart'
+import loginConfirm from '@/mixins/loginConfirm'
 export default {
   name: 'ProdetailIndex',
+  mixins: [loginConfirm],
   components: {
     CountBox
   },
@@ -179,20 +181,7 @@ export default {
       this.showPannel = true
     },
     async addCart () {
-      if (!this.$store.getters.token) {
-        this.$dialog.confirm({
-          title: '温馨提示',
-          message: '此时需要先登录才能继续操作',
-          confirmButtonText: '去登录',
-          cancelButtonText: '再逛逛'
-        }).then(() => {
-          this.$router.replace({
-            path: '/login',
-            query: {
-              backUrl: this.$route.fullPath
-            }
-          })
-        }).catch(() => {})
+      if (this.loginConfirm()) {
         return
       }
       const res = await addGoodsCart(this.goodsId, this.addCount, this.goodsdetail.skuList[0].goods_sku_id)
@@ -202,7 +191,9 @@ export default {
       this.showPannel = false
     },
     goBuyNow () {
-      console.log(1)
+      if (this.loginConfirm()) {
+        return
+      }
       this.$router.push({
         path: '/pay',
         query: {
