@@ -1,6 +1,8 @@
 import Vue from 'vue'
-import { Area, AddressEdit, AddressList, Checkbox, CheckboxGroup, Dialog, Sku, ActionSheet, Rate, GoodsAction, GoodsActionIcon, GoodsActionButton, Sidebar, SidebarItem, DropdownMenu, DropdownItem, Tabbar, TabbarItem, Button, NavBar, Toast, Search, Swipe, SwipeItem, Lazyload, Grid, GridItem, Icon } from 'vant'
+import { Tab, Tabs, Area, AddressEdit, AddressList, Checkbox, CheckboxGroup, Dialog, Sku, ActionSheet, Rate, GoodsAction, GoodsActionIcon, GoodsActionButton, Sidebar, SidebarItem, DropdownMenu, DropdownItem, Tabbar, TabbarItem, Button, NavBar, Toast, Search, Swipe, SwipeItem, Lazyload, Grid, GridItem, Icon } from 'vant'
 
+Vue.use(Tab)
+Vue.use(Tabs)
 Vue.use(Area)
 Vue.use(AddressEdit)
 Vue.use(AddressList)
