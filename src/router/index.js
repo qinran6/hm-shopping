@@ -1,19 +1,21 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Login from '@/views/login'
-import Layout from '@/views/layout/index.vue'
-import MyOrder from '@/views/myorder'
-import Pay from '@/views/pay/index.vue'
-import ProDetail from '@/views/prodetail'
-import Search from '@/views/search/index.vue'
-import SearchList from '@/views/search/list.vue'
+
 import Home from '@/views/layout/home.vue'
 import Category from '@/views/layout/category.vue'
 import Cart from '@/views/layout/cart.vue'
 import User from '@/views/layout/user.vue'
-import AddressList from '@/views/pay/addresslist.vue'
-import AddressEdit from '@/views/pay/addressedit.vue'
 import { getInfo } from '@/utils/storage'
+// 路由懒加载
+const Login = () => import('@/views/login')
+const Layout = () => import('@/views/layout/index.vue')
+const MyOrder = () => import('@/views/myorder')
+const Pay = () => import('@/views/pay/index.vue')
+const ProDetail = () => import('@/views/prodetail')
+const Search = () => import('@/views/search/index.vue')
+const SearchList = () => import('@/views/search/list.vue')
+const AddressList = () => import('@/views/pay/addresslist.vue')
+const AddressEdit = () => import('@/views/pay/addressedit.vue')
 
 Vue.use(VueRouter)
 
